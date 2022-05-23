@@ -111,21 +111,29 @@ class Customer {
   }
 
 
-  /* search for a customer/s */
+  /* search for customer/s */
 
-  // static async searchCustomers() {
-  //   let search = req.body.search;
+  static async searchCustomers(search) {
 
-  //   const result = await db.query(
-  //     `SELECT id, first_name, last_name 
-  //     FROM customers WHERE concat(first_name, ' ' ,last_name) 
-  //     ILIKE '%${search}%';`);
+    const result = await db.query(
+      `SELECT id, first_name, last_name, phone, notes 
+      FROM customers WHERE concat(first_name, ' ' ,last_name) 
+      ILIKE '%${search}%'`);
 
-  //   let customer = []
-  //   result.rows.forEach((cust) => {
-  //     customer.push(cust);
-  //   });
-  // }
+    let customers = []
+    result.rows.forEach((cust) => {
+
+      const customerResult = new Customer({
+        id: cust.id,
+        firstName: cust.first_name,
+        lastName: cust.last_name,
+        phone: cust.phone,
+        notes: cust.notes
+      })
+      customers.push(customerResult);
+    });
+    return customers;
+  }
 
 }
 

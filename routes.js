@@ -28,20 +28,9 @@ to click on a user and redirect to user's page*/
 
 router.post("/search", async (req, res, next) => {
   try {
+
     let search = req.body.search;
-
-    const result = await db.query(
-      `SELECT id, first_name, last_name 
-      FROM customers WHERE concat(first_name, ' ' ,last_name) 
-      ILIKE '%${search}%';`
-    );
-
-    let customers = []
-    result.rows.forEach((cust) => {
-      customers.push(cust);
-    })
-
-    // const customers = await Customer.searchCustomers();
+    const customers = await Customer.searchCustomers(search);
 
     return res.render("search_result.html", {
       customers
